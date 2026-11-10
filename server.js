@@ -61,6 +61,20 @@ app.get("/api/stats", async (req, res) => {
   }
 });
 
+// ---- 临时管理端点：清空统计（部署后调用一次即移除）----
+app.post("/api/clear", async (req, res) => {
+  if (req.headers["x-clear-key"] !== (process.env.CLEAR_KEY || "sky22clear")) {
+    return res.status(403).json({ error: "forbidden" });
+  }
+  try {
+    if (pool) await pool.query("DELETE FROM entries");
+    else mem.length = 0;
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(500).json({ error: String(e) });
+  }
+});
+
 // ---- 静态前端 ----
 app.use(express.static(path.join(__dirname, "public")));
 
