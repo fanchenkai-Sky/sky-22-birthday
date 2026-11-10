@@ -1,0 +1,403 @@
+/* ============================================================
+   Sky's 22nd Birthday · 统计生日页
+   设计语言：深空夜色 + 极光晕染 + 玻璃拟态 + 节庆渐变
+   ============================================================ */
+:root {
+  --bg-0: #07061a;
+  --bg-1: #120e2e;
+  --bg-2: #1c1640;
+  --glass: rgba(255, 255, 255, 0.06);
+  --glass-strong: rgba(255, 255, 255, 0.1);
+  --stroke: rgba(255, 255, 255, 0.12);
+  --text: #f4f1ff;
+  --muted: rgba(244, 241, 255, 0.6);
+  --faint: rgba(244, 241, 255, 0.38);
+  --rose: #ff5e8a;
+  --gold: #ffc24b;
+  --violet: #8b6cff;
+  --cyan: #5fe0ff;
+  --grad: linear-gradient(120deg, #ff5e8a 0%, #ff9d5c 38%, #ffc24b 70%, #8b6cff 100%);
+  --shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.7);
+  --r: 22px;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: var(--text);
+  background: var(--bg-0);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 极光背景 */
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(60% 50% at 18% 12%, rgba(139, 108, 255, 0.35), transparent 60%),
+    radial-gradient(55% 45% at 85% 18%, rgba(255, 94, 138, 0.28), transparent 60%),
+    radial-gradient(70% 60% at 50% 110%, rgba(95, 224, 255, 0.22), transparent 60%),
+    linear-gradient(160deg, var(--bg-1), var(--bg-0) 70%);
+  filter: saturate(1.1);
+}
+.aurora::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.5) 1px, transparent 1px);
+  background-size: 3px 3px;
+  opacity: 0.05;
+}
+
+.wrap {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 26px 20px 64px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- 屏幕切换 ---------- */
+.screen { display: none; animation: fadeUp 0.7s ease both; }
+.screen.active { display: block; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.kicker {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 11px;
+  color: var(--gold);
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+
+/* ---------- 玻璃卡 ---------- */
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--stroke);
+  border-radius: var(--r);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  box-shadow: var(--shadow);
+}
+
+/* ============================================================
+   屏幕 1 · 问候（Happy Birthday 首屏）
+   ============================================================ */
+#screen-greeting { text-align: center; padding-top: 8vh; }
+.hero-big {
+  font-family: "Great Vibes", "Brush Script MT", "Segoe Script", cursive;
+  font-weight: 400;
+  font-size: clamp(54px, 17vw, 96px);
+  line-height: 1.12;
+  margin: 0 0 6px;
+  letter-spacing: 0;
+}
+.hero-big .grad,
+.hero-big .name {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero-big .name {
+  display: block;
+  font-size: 0.7em;
+  font-weight: 400;
+  margin-top: 6px;
+}
+.hero-sub {
+  color: var(--muted);
+  font-size: 15px;
+  margin: 10px auto 4px;
+  max-width: 420px;
+}
+.hero-sub.zh { color: var(--faint); font-size: 13px; }
+.hero-line {
+  margin: 22px auto 30px;
+  max-width: 440px;
+  font-size: 14px;
+  color: var(--text);
+  opacity: 0.9;
+}
+
+.cta {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a0e22;
+  background: var(--grad);
+  padding: 16px 40px;
+  border-radius: 999px;
+  box-shadow: 0 14px 34px -10px rgba(255, 94, 138, 0.6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.cta:hover { transform: translateY(-2px); box-shadow: 0 18px 40px -10px rgba(255, 94, 138, 0.7); }
+.cta:active { transform: translateY(0); }
+
+.floating {
+  margin-top: 36px;
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  font-size: 26px;
+  opacity: 0.85;
+}
+.floating span { animation: bob 3.4s ease-in-out infinite; }
+.floating span:nth-child(2) { animation-delay: 0.5s; }
+.floating span:nth-child(3) { animation-delay: 1s; }
+.floating span:nth-child(4) { animation-delay: 1.5s; }
+@keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+/* ============================================================
+   屏幕 2 · 问卷
+   ============================================================ */
+.form-card { padding: 26px 22px; }
+.form-title {
+  font-size: 24px;
+  margin: 0 0 6px;
+  font-weight: 700;
+}
+.form-title span { display: block; font-size: 14px; color: var(--muted); font-weight: 500; margin-top: 2px; }
+.form-sub { font-size: 13px; color: var(--muted); margin: 0 0 20px; }
+
+.field { margin-bottom: 18px; }
+.field > span.lbl {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.field select,
+.field input[type="number"] {
+  width: 100%;
+  border: 1px solid var(--stroke);
+  border-radius: 14px;
+  padding: 13px 14px;
+  font-size: 15px;
+  font-family: inherit;
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text);
+  appearance: none;
+}
+.field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23f4f1ff' d='M6 8 0 0h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+.field select option { background: #1c1640; color: var(--text); }
+.field input:focus, .field select:focus {
+  outline: none;
+  border-color: var(--rose);
+  box-shadow: 0 0 0 3px rgba(255, 94, 138, 0.18);
+}
+
+/* 性别分段选择 */
+.segmented { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.segmented button {
+  border: 1px solid var(--stroke);
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text);
+  border-radius: 14px;
+  padding: 12px 8px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.segmented button.sel {
+  border-color: transparent;
+  background: var(--grad);
+  color: #1a0e22;
+  font-weight: 700;
+}
+
+.btn-submit {
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a0e22;
+  background: var(--grad);
+  padding: 15px;
+  border-radius: 16px;
+  margin-top: 6px;
+  box-shadow: 0 14px 30px -12px rgba(255, 94, 138, 0.55);
+  transition: transform 0.2s ease;
+}
+.btn-submit:hover { transform: translateY(-2px); }
+.btn-submit:disabled { opacity: 0.5; cursor: default; transform: none; }
+
+.skip {
+  display: block;
+  text-align: center;
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--faint);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: underline;
+}
+
+.privacy {
+  text-align: center;
+  font-size: 11px;
+  color: var(--faint);
+  margin: 18px 6px 0;
+}
+
+/* ============================================================
+   屏幕 3 · 庆祝 + 实时看板
+   ============================================================ */
+#screen-stats { padding-top: 4px; }
+.confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+.reveal-head { text-align: center; margin-bottom: 22px; position: relative; }
+.hb {
+  font-family: "Great Vibes", "Brush Script MT", "Segoe Script", cursive;
+  font-weight: 400;
+  font-size: clamp(46px, 15vw, 78px);
+  line-height: 1.12;
+  margin: 0;
+  letter-spacing: 0;
+}
+.hb .grad,
+.hb .nm {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hb .nm { display: inline-block; }
+.hb-sub { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
+
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: var(--glass);
+  border: 1px solid var(--stroke);
+  font-size: 13px;
+  color: var(--text);
+}
+.live .dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: #46e3a0; box-shadow: 0 0 0 0 rgba(70, 227, 160, 0.7);
+  animation: pulse 1.8s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(70, 227, 160, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(70, 227, 160, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(70, 227, 160, 0); }
+}
+
+/* 看板网格 */
+.stat-card { padding: 20px 18px; margin-bottom: 16px; }
+.stat-card h2 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 14px;
+  color: var(--text);
+  letter-spacing: 0.3px;
+}
+.stat-card h2 small { color: var(--faint); font-weight: 400; }
+
+/* 横向条形（国籍 / 年龄） */
+.bars { display: flex; flex-direction: column; gap: 11px; }
+.bar-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: center; }
+.bar-label { font-size: 13px; display: flex; align-items: center; gap: 8px; min-width: 0; }
+.bar-label .flag { font-size: 16px; }
+.bar-label .txt { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar-val { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.bar-track {
+  grid-column: 1 / -1;
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: var(--grad);
+  transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 性别环形 */
+.donut-card { display: flex; flex-direction: column; align-items: center; }
+.donut-wrap { position: relative; width: 168px; height: 168px; }
+.donut-wrap svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+.donut-seg { transition: stroke-dashoffset 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
+.donut-center {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+}
+.donut-center .num { font-size: 30px; font-weight: 800; line-height: 1; }
+.donut-center .cap { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.legend { width: 100%; margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+.legend-row { display: flex; align-items: center; gap: 9px; font-size: 13px; }
+.legend-row .sw { width: 11px; height: 11px; border-radius: 3px; flex: none; }
+.legend-row .lg-txt { flex: 1; }
+.legend-row .lg-val { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* 二维码 */
+.qr-card { text-align: center; }
+.qr-box {
+  width: 150px; height: 150px;
+  margin: 12px auto 8px;
+  padding: 8px; background: #fff; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+}
+.qr-box img, .qr-box canvas { width: 100% !important; height: 100% !important; }
+.qr-url { font-size: 10px; color: var(--faint); word-break: break-all; margin: 0; }
+
+footer { text-align: center; font-size: 11px; color: var(--faint); margin-top: 14px; }
+
+/* 语言切换 */
+.lang-toggle {
+  position: fixed;
+  top: 14px; right: 14px;
+  z-index: 20;
+  border: 1px solid var(--stroke);
+  background: var(--glass);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 7px 15px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+  backdrop-filter: blur(10px);
+}
+.lang-toggle:hover { background: var(--glass-strong); }
+
+/* 中文模式：隐藏英文副文案，突出中文 */
+body.lang-zh .hero-sub:not(.zh) { display: none; }
+body.lang-zh .hero-sub.zh { color: var(--muted); font-size: 15px; }
+body:not(.lang-zh) .hero-sub.zh { display: none; }

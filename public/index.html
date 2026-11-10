@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Sky's 22nd Birthday</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="aurora"></div>
+  <button id="lang-toggle" class="lang-toggle">中文</button>
+
+  <div class="wrap">
+
+    <!-- 屏幕 1 · 问候 -->
+    <section id="screen-greeting" class="screen active">
+      <p class="kicker">Sky's 22nd Birthday · 2026</p>
+      <h1 class="hero-big">
+        <span class="grad">Happy Birthday</span>
+        <span class="name">Sky 🎂</span>
+      </h1>
+      <p class="hero-sub" data-i18n="greeting_sub"></p>
+      <p class="hero-sub zh" data-i18n="greeting_sub_zh"></p>
+      <p class="hero-line" data-i18n="greeting_line"></p>
+      <button id="btn-start" class="cta" data-i18n="btn_start"></button>
+      <div class="floating"><span>🌏</span><span>🎈</span><span>✨</span><span>🎉</span></div>
+    </section>
+
+    <!-- 屏幕 2 · 问卷 -->
+    <section id="screen-survey" class="screen">
+      <div class="form-card glass">
+        <h2 class="form-title" data-i18n="form_title">
+          <span data-i18n="form_title_zh"></span>
+        </h2>
+        <p class="form-sub" data-i18n="form_sub"></p>
+
+        <form id="survey" autocomplete="off">
+          <div class="field">
+            <span class="lbl" data-i18n="lbl_nat"></span>
+            <select id="f-nat" required></select>
+          </div>
+          <div class="field">
+            <span class="lbl" data-i18n="lbl_age"></span>
+            <input type="number" id="f-age" min="1" max="120" placeholder="22" required />
+          </div>
+          <div class="field">
+            <span class="lbl" data-i18n="lbl_gender"></span>
+            <div class="segmented" id="f-gender">
+              <button type="button" data-g="male" data-i18n="g_male"></button>
+              <button type="button" data-g="female" data-i18n="g_female"></button>
+              <button type="button" data-g="nb" data-i18n="g_nb"></button>
+              <button type="button" data-g="na" data-i18n="g_na"></button>
+            </div>
+          </div>
+          <button type="submit" id="btn-reveal" class="btn-submit" data-i18n="btn_reveal"></button>
+        </form>
+        <button id="btn-skip" class="skip" data-i18n="skip"></button>
+      </div>
+      <p class="privacy" data-i18n="privacy"></p>
+      <p class="privacy" data-i18n="privacy_zh"></p>
+    </section>
+
+    <!-- 屏幕 3 · 庆祝 + 实时看板 -->
+    <section id="screen-stats" class="screen">
+      <canvas id="confetti" class="confetti"></canvas>
+      <div class="reveal-head">
+        <p class="kicker">To Sky, from the world</p>
+        <h1 class="hb"><span class="grad">Happy Birthday</span> <span class="nm">Sky</span> 🎂</h1>
+        <p class="hb-sub" data-i18n="hb_sub"></p>
+        <div class="live">
+          <span class="dot"></span>
+          <span><span id="live-count">0</span> <span data-i18n="live"></span></span>
+        </div>
+      </div>
+
+      <div class="stat-card glass">
+        <h2><span data-i18n="h_nat"></span> <small data-i18n="h_nat_zh"></small></h2>
+        <div id="nat-bars" class="bars"></div>
+      </div>
+
+      <div class="stat-card glass">
+        <h2><span data-i18n="h_age"></span> <small data-i18n="h_age_zh"></small></h2>
+        <div id="age-bars" class="bars"></div>
+      </div>
+
+      <div class="stat-card glass donut-card">
+        <h2><span data-i18n="h_gender"></span> <small data-i18n="h_gender_zh"></small></h2>
+        <div class="donut-wrap">
+          <svg id="donut" viewBox="0 0 120 120"></svg>
+          <div id="donut-center" class="donut-center"></div>
+        </div>
+        <div id="gender-legend" class="legend"></div>
+      </div>
+
+      <div class="stat-card glass qr-card">
+        <h2><span data-i18n="h_qr"></span> <small data-i18n="h_qr_zh"></small></h2>
+        <div id="qrcode" class="qr-box"></div>
+        <p id="qr-url" class="qr-url"></p>
+      </div>
+
+      <footer data-i18n="footer"></footer>
+    </section>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="countries.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
