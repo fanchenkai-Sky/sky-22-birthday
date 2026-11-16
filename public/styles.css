@@ -147,6 +147,9 @@ body {
 }
 .cta:hover { transform: translateY(-2px); box-shadow: 0 18px 40px -10px rgba(255, 94, 138, 0.7); }
 .cta:active { transform: translateY(0); }
+.cta .en, .cta .zh { display: block; }
+.cta .en { font-size: 17px; line-height: 1.25; }
+.cta .zh { font-size: 13px; line-height: 1.3; opacity: 0.82; margin-top: 4px; letter-spacing: 0.5px; }
 
 .floating {
   margin-top: 36px;
