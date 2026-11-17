@@ -61,6 +61,20 @@ app.get("/api/stats", async (req, res) => {
   }
 });
 
+// ---- 维护端点：清空统计（需 x-admin-key，用于清演示/乱填数据）----
+app.post("/api/admin/clear", async (req, res) => {
+  if (req.headers["x-admin-key"] !== (process.env.ADMIN_KEY || "sky22-admin-2026")) {
+    return res.status(403).json({ error: "forbidden" });
+  }
+  try {
+    if (pool) await pool.query("DELETE FROM entries");
+    else mem.length = 0;
+    res.json({ ok: true, cleared: true });
+  } catch (e) {
+    res.status(500).json({ error: String(e) });
+  }
+});
+
 // ---- 自检端点：一眼确认数据落点（防静默降级）----
 app.get("/api/health", async (req, res) => {
   let count = null;
