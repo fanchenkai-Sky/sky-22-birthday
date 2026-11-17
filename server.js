@@ -65,22 +65,26 @@ app.get("/api/stats", async (req, res) => {
 app.get("/api/health", async (req, res) => {
   let count = null;
   let dbOk = false;
+  let dbError = null;
   if (pool) {
     try {
       const r = await pool.query("SELECT COUNT(*)::int AS n FROM entries");
       count = r.rows[0].n;
       dbOk = true;
     } catch (e) {
-      console.error("health db error:", e);
+      dbError = String(e && e.message || e);
+      console.error("health db error:", dbError);
     }
   } else {
+    dbError = "DATABASE_URL not set";
     console.error("!! WARNING: DATABASE_URL 未设置，数据仅存内存，重启即丢失 !!");
     count = mem.length;
   }
   res.json({
     storage: dbOk ? "postgres" : "memory",
     count,
-    warning: dbOk ? null : "DATABASE_URL missing — data is NOT persistent"
+    dbError,
+    warning: dbOk ? null : "data is NOT persistent"
   });
 });
 
