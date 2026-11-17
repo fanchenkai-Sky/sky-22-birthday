@@ -61,6 +61,29 @@ app.get("/api/stats", async (req, res) => {
   }
 });
 
+// ---- 自检端点：一眼确认数据落点（防静默降级）----
+app.get("/api/health", async (req, res) => {
+  let count = null;
+  let dbOk = false;
+  if (pool) {
+    try {
+      const r = await pool.query("SELECT COUNT(*)::int AS n FROM entries");
+      count = r.rows[0].n;
+      dbOk = true;
+    } catch (e) {
+      console.error("health db error:", e);
+    }
+  } else {
+    console.error("!! WARNING: DATABASE_URL 未设置，数据仅存内存，重启即丢失 !!");
+    count = mem.length;
+  }
+  res.json({
+    storage: dbOk ? "postgres" : "memory",
+    count,
+    warning: dbOk ? null : "DATABASE_URL missing — data is NOT persistent"
+  });
+});
+
 // ---- 静态前端 ----
 app.use(express.static(path.join(__dirname, "public")));
 
